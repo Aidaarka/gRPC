@@ -19,31 +19,6 @@ class TestServiceStub(object):
                 request_serializer=test__pb2.TestRequest.SerializeToString,
                 response_deserializer=test__pb2.TestReply.FromString,
                 )
-        self.df_info = channel.unary_unary(
-                '/TestService/df_info',
-                request_serializer=test__pb2.TestRequest.SerializeToString,
-                response_deserializer=test__pb2.TestReply.FromString,
-                )
-        self.data = channel.unary_unary(
-                '/TestService/data',
-                request_serializer=test__pb2.TestRequest.SerializeToString,
-                response_deserializer=test__pb2.TestReply.FromString,
-                )
-        self.n_rows = channel.unary_unary(
-                '/TestService/n_rows',
-                request_serializer=test__pb2.TestRequest.SerializeToString,
-                response_deserializer=test__pb2.TestReply.FromString,
-                )
-        self.max_by_col = channel.unary_unary(
-                '/TestService/max_by_col',
-                request_serializer=test__pb2.TestRequest.SerializeToString,
-                response_deserializer=test__pb2.TestReply.FromString,
-                )
-        self.upload_data = channel.unary_unary(
-                '/TestService/upload_data',
-                request_serializer=test__pb2.TestRequest.SerializeToString,
-                response_deserializer=test__pb2.TestReply.FromString,
-                )
 
 
 class TestServiceServicer(object):
@@ -55,66 +30,11 @@ class TestServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def df_info(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def data(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def n_rows(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def max_by_col(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def upload_data(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
 
 def add_TestServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'test': grpc.unary_unary_rpc_method_handler(
                     servicer.test,
-                    request_deserializer=test__pb2.TestRequest.FromString,
-                    response_serializer=test__pb2.TestReply.SerializeToString,
-            ),
-            'df_info': grpc.unary_unary_rpc_method_handler(
-                    servicer.df_info,
-                    request_deserializer=test__pb2.TestRequest.FromString,
-                    response_serializer=test__pb2.TestReply.SerializeToString,
-            ),
-            'data': grpc.unary_unary_rpc_method_handler(
-                    servicer.data,
-                    request_deserializer=test__pb2.TestRequest.FromString,
-                    response_serializer=test__pb2.TestReply.SerializeToString,
-            ),
-            'n_rows': grpc.unary_unary_rpc_method_handler(
-                    servicer.n_rows,
-                    request_deserializer=test__pb2.TestRequest.FromString,
-                    response_serializer=test__pb2.TestReply.SerializeToString,
-            ),
-            'max_by_col': grpc.unary_unary_rpc_method_handler(
-                    servicer.max_by_col,
-                    request_deserializer=test__pb2.TestRequest.FromString,
-                    response_serializer=test__pb2.TestReply.SerializeToString,
-            ),
-            'upload_data': grpc.unary_unary_rpc_method_handler(
-                    servicer.upload_data,
                     request_deserializer=test__pb2.TestRequest.FromString,
                     response_serializer=test__pb2.TestReply.SerializeToString,
             ),
@@ -140,91 +60,6 @@ class TestService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/TestService/test',
-            test__pb2.TestRequest.SerializeToString,
-            test__pb2.TestReply.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def df_info(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/TestService/df_info',
-            test__pb2.TestRequest.SerializeToString,
-            test__pb2.TestReply.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def data(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/TestService/data',
-            test__pb2.TestRequest.SerializeToString,
-            test__pb2.TestReply.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def n_rows(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/TestService/n_rows',
-            test__pb2.TestRequest.SerializeToString,
-            test__pb2.TestReply.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def max_by_col(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/TestService/max_by_col',
-            test__pb2.TestRequest.SerializeToString,
-            test__pb2.TestReply.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def upload_data(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/TestService/upload_data',
             test__pb2.TestRequest.SerializeToString,
             test__pb2.TestReply.FromString,
             options, channel_credentials,

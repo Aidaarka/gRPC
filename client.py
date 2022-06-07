@@ -1,6 +1,5 @@
 import os
 from pydoc import resolve
-from urllib import response
 import test_pb2
 import test_pb2_grpc
 import time
@@ -13,51 +12,23 @@ from google.protobuf import struct_pb2
 from google.protobuf.json_format import MessageToJson
 
 
-
-
 def run():
     with grpc.insecure_channel('localhost:50051') as channel:
         stub = test_pb2_grpc.TestServiceStub(channel)
-
-        response_data = stub.data(test_pb2.TestRequest
+        response = stub.test(test_pb2.TestRequest
                 (filename = input("Name of file: "),
                 nrows=int(input("Inter quantity of rows: "))))
+        
 
         #struct_client = struct_pb2.Struct() 
         #struct_client.ParseFromString(response.message) #serialize to struct
-        msgjson = MessageToJson(response_data.message)
+        msgjson = MessageToJson(response.message)
         msgdict = json.loads(msgjson)
         dfmsg_client = pd.DataFrame(msgdict['data'], map(int, msgdict['index']),
                     msgdict['columns'])
-
+        
         print(dfmsg_client)
-
-        print("Choose one of the options: \n \
-            1. Data information \n \
-                2. Data output \n \
-                    3. Find maximum in the column \n \
-                        4. Choose dataset")
-
-        n_option = stub.test(test_pb2.TestRequest(option = int(input("Inter the number of option: "))))
-
-        if n_option == 1:
-            response_info = stub.df_info(test_pb2.TestRequest())
-            return response_info.message
-
-        elif n_option == 2: 
-            response_nrows = stub.n_rows(test_pb2.TestRequest
-                (nrows=int(input("Inter quantity of rows: "))))
-            return response_nrows.message
-
-        elif n_option == 3:
-            print(msgdict['columns'])
-            response_max = stub.max_by_col(test_pb2.TestRequest
-                (column_name = input("Name of column: ")))
-            return response_max.message
-
-
-        # print(dfmsg_client)
-
+        
 
 def close(channel):
     channel.close()
