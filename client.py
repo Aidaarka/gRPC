@@ -19,7 +19,7 @@ class Client(test_pb2_grpc.TestServiceServicer):
         self.stub = test_pb2_grpc.TestServiceStub(self.channel)
 
 
-    # Upload data
+    # Upload data using pandas
     def upload_data(self,  filename):
         response_upload = self.stub.upload_data_server(test_pb2.nirRequest(filename = filename))
         print (response_upload.string_message)
