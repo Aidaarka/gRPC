@@ -14,17 +14,50 @@ class TestServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.test = channel.unary_unary(
-                '/TestService/test',
-                request_serializer=test__pb2.TestRequest.SerializeToString,
-                response_deserializer=test__pb2.TestReply.FromString,
+        self.upload_data_server = channel.unary_unary(
+                '/TestService/upload_data_server',
+                request_serializer=test__pb2.nirRequest.SerializeToString,
+                response_deserializer=test__pb2.nirReply.FromString,
+                )
+        self.n_rows_server = channel.unary_unary(
+                '/TestService/n_rows_server',
+                request_serializer=test__pb2.nirRequest.SerializeToString,
+                response_deserializer=test__pb2.nirReply.FromString,
+                )
+        self.df_info_server = channel.unary_unary(
+                '/TestService/df_info_server',
+                request_serializer=test__pb2.nirRequest.SerializeToString,
+                response_deserializer=test__pb2.nirReply.FromString,
+                )
+        self.max_by_col_server = channel.unary_unary(
+                '/TestService/max_by_col_server',
+                request_serializer=test__pb2.nirRequest.SerializeToString,
+                response_deserializer=test__pb2.nirReply.FromString,
                 )
 
 
 class TestServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def test(self, request, context):
+    def upload_data_server(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def n_rows_server(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def df_info_server(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def max_by_col_server(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -33,10 +66,25 @@ class TestServiceServicer(object):
 
 def add_TestServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'test': grpc.unary_unary_rpc_method_handler(
-                    servicer.test,
-                    request_deserializer=test__pb2.TestRequest.FromString,
-                    response_serializer=test__pb2.TestReply.SerializeToString,
+            'upload_data_server': grpc.unary_unary_rpc_method_handler(
+                    servicer.upload_data_server,
+                    request_deserializer=test__pb2.nirRequest.FromString,
+                    response_serializer=test__pb2.nirReply.SerializeToString,
+            ),
+            'n_rows_server': grpc.unary_unary_rpc_method_handler(
+                    servicer.n_rows_server,
+                    request_deserializer=test__pb2.nirRequest.FromString,
+                    response_serializer=test__pb2.nirReply.SerializeToString,
+            ),
+            'df_info_server': grpc.unary_unary_rpc_method_handler(
+                    servicer.df_info_server,
+                    request_deserializer=test__pb2.nirRequest.FromString,
+                    response_serializer=test__pb2.nirReply.SerializeToString,
+            ),
+            'max_by_col_server': grpc.unary_unary_rpc_method_handler(
+                    servicer.max_by_col_server,
+                    request_deserializer=test__pb2.nirRequest.FromString,
+                    response_serializer=test__pb2.nirReply.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -49,7 +97,7 @@ class TestService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def test(request,
+    def upload_data_server(request,
             target,
             options=(),
             channel_credentials=None,
@@ -59,8 +107,59 @@ class TestService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/TestService/test',
-            test__pb2.TestRequest.SerializeToString,
-            test__pb2.TestReply.FromString,
+        return grpc.experimental.unary_unary(request, target, '/TestService/upload_data_server',
+            test__pb2.nirRequest.SerializeToString,
+            test__pb2.nirReply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def n_rows_server(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/TestService/n_rows_server',
+            test__pb2.nirRequest.SerializeToString,
+            test__pb2.nirReply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def df_info_server(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/TestService/df_info_server',
+            test__pb2.nirRequest.SerializeToString,
+            test__pb2.nirReply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def max_by_col_server(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/TestService/max_by_col_server',
+            test__pb2.nirRequest.SerializeToString,
+            test__pb2.nirReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

@@ -9,41 +9,59 @@ import pandas as pd
 import json
 import logging
 from google.protobuf.message import Message 
-#from google.protobuf import any
 from google.protobuf import any_pb2
 from google.protobuf import json_format
 from google.protobuf.json_format import ParseDict
 from google.protobuf import struct_pb2
+from google.protobuf.json_format import MessageToJson
+import io
 
 class Listener(test_pb2_grpc.TestServiceServicer):
     
     # Start spark session
-    spark = SparkSession.builder\
-        .master("local[*]")\
-        .appName('Test run for big DataFrame')\
-        .getOrCreate()
+    # spark = SparkSession.builder\
+    #     .master("local[*]")\
+    #     .appName('Test run for big DataFrame')\
+    #     .getOrCreate()
 
     # Read data
-    def data(self, request):
-        path = f"/home/aidar/Desktop/SAS/{request.filename}.csv"
-        dfspark = self.spark.read.csv(path, header = True)
-        return dfspark
+    def upload_data_server(self, request, context):
+        # path = f"/home/aidar/Desktop/SAS/{request.filename}.csv"
+        # self.dfspark = self.spark.read.csv(path, header = True)
+        self.dataframe = pd.read_csv(f"/home/aidar/Desktop/SAS/{request.filename}.csv")
+        return test_pb2.nirReply(string_message = f'Dataset {request.filename}.csv successfully uploaded!')
 
-    # Upload data, transform to Struct type, send to Server
-    def test(self, request, context):
-        dfspark = self.data(request)
-        dfpandas = dfspark.limit(request.nrows).toPandas()
+    # Quantity of rows
+    def n_rows_server(self, request, context):
+        dataframe = self.dataframe
+        dfpandas = dataframe.head(request.nrows)
         dfdict = dfpandas.to_dict(orient='split')
         dfstruct_server = ParseDict(dfdict, struct_pb2.Struct()) 
-        
-        # bstruct = dfstruct_server.SerializeToString() # serialization to byte
-        
-        return test_pb2.TestReply(message = dfstruct_server)
-        
+        return test_pb2.nirReply(struct_data = dfstruct_server)
 
-#def n_rows(): ...
+    # Information about dataset
+    def df_info_server(self, request, context):
+        dataframe = self.dataframe
+        buf = io.StringIO()
+        dataframe.info(buf=buf)
+        message_info = buf.getvalue()
+        return test_pb2.nirReply(string_message = message_info)
 
-#def max_by_col(): ...
+    # Find max in column
+    def max_by_col_server(self, request, context):
+        dataframe = self.dataframe
+        max_col = str(dataframe[f'{request.column_name}'].max())
+        return test_pb2.nirReply(string_message = max_col)
+
+
+    # def full_dataset(self, request):
+    #     dfspark = self.dfspark
+    #     dfpandas = dfspark.toPandas()
+    #     return test_pb2.TestReply(message = dfpandas)
+
+
+    # bstruct = dfstruct_server.SerializeToString() # serialization to byte
+        
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
@@ -56,53 +74,3 @@ def serve():
 if __name__ == "__main__":
     logging.basicConfig()
     serve()
-
-
-
-        # datapd = pd.read_csv(f"/home/aidar/Desktop/SAS/{request.filename}.csv")
-        # datacut = datapd.head(request.name)
-        # datamid = datacut.to_json(orient = 'records')
-        # parsed = json.loads(json_format.MessageToJson(datamid))
-        # datajson = json.dumps(parsed)
-        # some_any = any_pb2.Any()
-
-        # fd = some_any.Pack(df2)
-        # serialized = some_any.SerializeToString(deterministic=True)
-
-        #any_message.Pack(message)
-        #datajson = json.dumps(parsed)
-
-
-    """
-    def __init__(self, *args, **kwargs):
-        self.counter = 0
-        self.lastPrintTime = time.time()
-
-    def test(self, request, context):
-        self.counter += 1
-        if(self.counter > 10000):
-            print("10000 calls in %3f seconds" % (time.time() - self.lastPrintTime))
-            self.lastPrintTime = time.time()
-            self.counter = 0
-        return test_pb2.Test2(count = request.count + 1)"""
-
-
-"""try:
-        while True:
-            print("server on: threads %i" % (threading.active_count()))
-            time.sleep(1)
-    except KeyboardInterrupt:
-        print("KeyboardInterrupt")
-        server.stop(0)"""
-
-
-"""   dataPath = "/home/aidar/Desktop/SAS/data.csv"
-
-    def test(self, request, context):
-        
-        file = open(self.dataPath, 'r')
-        dataFrame = file.read()
-        testdata = dataFrame.split("\n")
-        
-        for i in testdata:
-        return test_pb2.TestReply(message = dataFrame)"""

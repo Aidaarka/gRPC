@@ -12,72 +12,51 @@ from google.protobuf import struct_pb2
 from google.protobuf.json_format import MessageToJson
 
 
-def run():
-    with grpc.insecure_channel('localhost:50051') as channel:
-        stub = test_pb2_grpc.TestServiceStub(channel)
-        response = stub.test(test_pb2.TestRequest
-                (filename = input("Name of file: "),
-                nrows=int(input("Inter quantity of rows: "))))
+class Client(test_pb2_grpc.TestServiceServicer):
         
+    def __init__(self):
+        self.channel =  grpc.insecure_channel('localhost:50051')
+        self.stub = test_pb2_grpc.TestServiceStub(self.channel)
 
-        #struct_client = struct_pb2.Struct() 
-        #struct_client.ParseFromString(response.message) #serialize to struct
-        msgjson = MessageToJson(response.message)
+
+    # Upload data
+    def upload_data(self,  filename):
+        response_upload = self.stub.upload_data_server(test_pb2.nirRequest(filename = filename))
+        print (response_upload.string_message)
+
+
+    # Print information about dataset
+    def print_df_info(self, filename):
+        response_info = self.stub.df_info_server(test_pb2.nirRequest(filename = filename))
+        print ("Information of dataset: \n\n", response_info.string_message)
+
+
+    # Choosing number of rows and printing data
+    def print_nrows_data(self, nrows):
+        response_nrows = self.stub.n_rows_server(test_pb2.nirRequest(nrows = nrows))
+        msgjson = MessageToJson(response_nrows.struct_data)
         msgdict = json.loads(msgjson)
-        dfmsg_client = pd.DataFrame(msgdict['data'], map(int, msgdict['index']),
-                    msgdict['columns'])
-        
-        print(dfmsg_client)
-        
-
-def close(channel):
-    channel.close()
-
-if __name__ == "__main__":
-    logging.basicConfig()
-    run()
+        self.dfmsg_client = pd.DataFrame(msgdict['data'], map(int, msgdict['index']), msgdict['columns'])
+        print(f"{nrows} rows of dataset: \n\n", self.dfmsg_client)
 
 
-        # data = response.message
-        # with open("./serializedFile", "rb") as fd:
-        #     data.ParseFromString(fd.read())
-        # body_json = struct_pb2.Struct()
-        # body_json.ParseFromString(response.message)
-        # bodydict = dict(body_json)
+    # Find max in column
+    def max_by_column(self, column_name):
+        response_max = self.stub.max_by_col_server(test_pb2.nirRequest(column_name = column_name))
+        print ("Maximum value in column: ", response_max.string_message)
 
 
-        # bodydf = pd.DataFrame.from_dict(bodydict, orient='index')
-        # bodydf
-
-        # some_any1 = any_pb2.Any()
-        # fd1 = some_any1.Unpack(response.message)
+    # def print_full_data(self, filename):
+    #     response_full = self.stub.upload_data_server(test_pb2.TestRequest
+    #             (filename = filename))
 
 
-"""counter = response.count
-                if counter % 1000 == 0:
-                    print("%4f : reso=%s : procid=%i" % 
-                    (time.time() - start, response.count, pid))"""
+    def close(channel):
+        channel.close()
 
-
-
-
-"""def get_data(stub):
-    response = stub.test(test_pb2.TestRequest())
-    return response.message
-
-def convert_to_json(input_data):
-    data = input_data.split('\n')[1:-1]
-    json_response = []
-
-    for line in data:
-        components = line.split(',')
-        json_response.append(components)
-    
-    return json.dumps(json_response)
-
-def run():
-    with grpc.insecure_channel("localhost:9999") as channel:
-        stub = test_pb2_grpc.TestServiceStub(channel)
-        input_data = get_data(stub)
-        resp = make_response(convert_to_json(input_data))
-        return resp"""
+    if __name__ == "__main__":
+        logging.basicConfig()
+        upload_data()
+        print_df_info()
+        print_nrows_data()
+        max_by_column()

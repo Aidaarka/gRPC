@@ -15,34 +15,34 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\ntest.proto\x1a\x1cgoogle/protobuf/struct.proto\".\n\x0bTestRequest\x12\r\n\x05nrows\x18\x01 \x01(\x05\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\"5\n\tTestReply\x12(\n\x07message\x18\x01 \x01(\x0b\x32\x17.google.protobuf.Struct21\n\x0bTestService\x12\"\n\x04test\x12\x0c.TestRequest\x1a\n.TestReply\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\ntest.proto\x1a\x1cgoogle/protobuf/struct.proto\"B\n\nnirRequest\x12\x10\n\x08\x66ilename\x18\x01 \x01(\t\x12\r\n\x05nrows\x18\x02 \x01(\x05\x12\x13\n\x0b\x63olumn_name\x18\x03 \x01(\t\"P\n\x08nirReply\x12,\n\x0bstruct_data\x18\x01 \x01(\x0b\x32\x17.google.protobuf.Struct\x12\x16\n\x0estring_message\x18\x02 \x01(\t2\xc3\x01\n\x0bTestService\x12.\n\x12upload_data_server\x12\x0b.nirRequest\x1a\t.nirReply\"\x00\x12)\n\rn_rows_server\x12\x0b.nirRequest\x1a\t.nirReply\"\x00\x12*\n\x0e\x64\x66_info_server\x12\x0b.nirRequest\x1a\t.nirReply\"\x00\x12-\n\x11max_by_col_server\x12\x0b.nirRequest\x1a\t.nirReply\"\x00\x62\x06proto3')
 
 
 
-_TESTREQUEST = DESCRIPTOR.message_types_by_name['TestRequest']
-_TESTREPLY = DESCRIPTOR.message_types_by_name['TestReply']
-TestRequest = _reflection.GeneratedProtocolMessageType('TestRequest', (_message.Message,), {
-  'DESCRIPTOR' : _TESTREQUEST,
+_NIRREQUEST = DESCRIPTOR.message_types_by_name['nirRequest']
+_NIRREPLY = DESCRIPTOR.message_types_by_name['nirReply']
+nirRequest = _reflection.GeneratedProtocolMessageType('nirRequest', (_message.Message,), {
+  'DESCRIPTOR' : _NIRREQUEST,
   '__module__' : 'test_pb2'
-  # @@protoc_insertion_point(class_scope:TestRequest)
+  # @@protoc_insertion_point(class_scope:nirRequest)
   })
-_sym_db.RegisterMessage(TestRequest)
+_sym_db.RegisterMessage(nirRequest)
 
-TestReply = _reflection.GeneratedProtocolMessageType('TestReply', (_message.Message,), {
-  'DESCRIPTOR' : _TESTREPLY,
+nirReply = _reflection.GeneratedProtocolMessageType('nirReply', (_message.Message,), {
+  'DESCRIPTOR' : _NIRREPLY,
   '__module__' : 'test_pb2'
-  # @@protoc_insertion_point(class_scope:TestReply)
+  # @@protoc_insertion_point(class_scope:nirReply)
   })
-_sym_db.RegisterMessage(TestReply)
+_sym_db.RegisterMessage(nirReply)
 
 _TESTSERVICE = DESCRIPTOR.services_by_name['TestService']
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _TESTREQUEST._serialized_start=44
-  _TESTREQUEST._serialized_end=90
-  _TESTREPLY._serialized_start=92
-  _TESTREPLY._serialized_end=145
-  _TESTSERVICE._serialized_start=147
-  _TESTSERVICE._serialized_end=196
+  _NIRREQUEST._serialized_start=44
+  _NIRREQUEST._serialized_end=110
+  _NIRREPLY._serialized_start=112
+  _NIRREPLY._serialized_end=192
+  _TESTSERVICE._serialized_start=195
+  _TESTSERVICE._serialized_end=390
 # @@protoc_insertion_point(module_scope)
